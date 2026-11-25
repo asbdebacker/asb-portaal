@@ -6,7 +6,7 @@
 'use strict';
 const http = require('http'), fs = require('fs'), path = require('path'), crypto = require('crypto');
 
-const VERSIE = '0.1.1';
+const VERSIE = '0.1.2';
 const POORT = parseInt(process.env.PORT || '3000', 10);
 const SLEUTEL = process.env.TEST_SLEUTEL || '';
 const GESTART = new Date();
