@@ -1,0 +1,15 @@
+{
+  "name": "asb-portaal-test",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Minimale testapplicatie voor de Node.js-hosting. Bevat alleen verzonnen testgegevens.",
+  "main": "server.js",
+  "scripts": {
+    "build": "node -e \"console.log('niets te bouwen')\"",
+    "serve": "node server.js",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "mysql2": "^3.11.0"
+  }
+}
