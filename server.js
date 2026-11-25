@@ -6,7 +6,7 @@
 'use strict';
 const http = require('http'), fs = require('fs'), path = require('path'), crypto = require('crypto');
 
-const VERSIE = '0.1.0';
+const VERSIE = '0.1.1';
 const POORT = parseInt(process.env.PORT || '3000', 10);
 const SLEUTEL = process.env.TEST_SLEUTEL || '';
 const GESTART = new Date();
@@ -78,7 +78,8 @@ const server = http.createServer(async (req, res) => {
       return stuur(res, 200, { werkt: terug.length === 1, geschrevenEnTeruggelezen: terug[0] || null, server: v[0].versie, database: v[0].naam, grootteKb: g[0].kb });
     }
     if (pad === '/api/ontvang') {
-      if (!magSturen(req)) return stuur(res, 401, { fout: 'geen of een verkeerde sleutel' });
+      // bij een weigering alleen lengtes tonen, nooit de sleutel zelf: zo is te zien of de kop onderweg verdwijnt of de instelling anders is
+      if (!magSturen(req)) return stuur(res, 401, { fout: 'geen of een verkeerde sleutel', kopOntvangen: !!req.headers.authorization, lengteOntvangen: (req.headers.authorization || '').replace(/^Bearer\s+/i, '').length, lengteIngesteld: SLEUTEL.length, lengteIngesteldZonderSpaties: SLEUTEL.trim().length });
       if (req.method === 'POST') {
         let b; try { b = JSON.parse(await lees(req)); } catch (e) { return stuur(res, 400, { fout: 'geen geldige gegevens' }); }
         const rij = { ontvangen: new Date().toISOString(), verstuurd: b.verstuurd || null, volgnummer: b.volgnummer, regels: Array.isArray(b.regels) ? b.regels.length : 0, vanAdres: (req.headers['x-forwarded-for'] || req.socket.remoteAddress || '').split(',')[0].trim(), viaHttps: (req.headers['x-forwarded-proto'] || '') || (req.socket.encrypted ? 'https' : 'onbekend') };
