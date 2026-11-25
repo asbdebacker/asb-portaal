@@ -5,7 +5,7 @@
   "description": "Minimale testapplicatie voor de Node.js-hosting. Bevat alleen verzonnen testgegevens.",
   "main": "server.js",
   "scripts": {
-    "build": "node -e \"console.log('niets te bouwen')\"",
+    "build": "npm ci --omit=dev",
     "serve": "node server.js",
     "start": "node server.js"
   },
