@@ -1,0 +1,116 @@
+/* Website ASB De Backer. Kleuren uit het logo: groen en zwart op een rustige, lichte achtergrond. */
+:root{--blad:#F5F6F2;--vlak:#FFFFFF;--inkt:#16211B;--zacht:#55635A;--lijn:#D9DFD8;--groen:#1F7A4D;--groen-donker:#145C39;--groen-licht:#E2F0E7;--donker:#15201A}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--blad);color:var(--inkt);font:17px/1.6 'Barlow',system-ui,Segoe UI,Arial,sans-serif;-webkit-text-size-adjust:100%}
+h1,h2,h3,.boventitel,.knop,nav a{font-family:'Barlow Semi Condensed','Barlow',system-ui,sans-serif}
+h1{font-size:clamp(34px,5.2vw,58px);line-height:1.05;margin:0 0 18px;font-weight:700;letter-spacing:-.01em;text-wrap:balance}
+h2{font-size:clamp(26px,3.2vw,36px);line-height:1.15;margin:0 0 22px;font-weight:700}
+h3{font-size:22px;line-height:1.2;margin:0 0 8px;font-weight:600}
+p{margin:0 0 14px}
+a{color:var(--groen-donker)}
+img{max-width:100%}
+.binnen{max-width:1160px;margin:0 auto;padding:0 24px}
+.spring{position:absolute;left:-999px}.spring:focus{left:12px;top:12px;background:#fff;padding:10px 14px;z-index:20}
+
+/* kop en menu */
+.kop{background:var(--vlak);border-bottom:1px solid var(--lijn);position:sticky;top:0;z-index:10}
+.kop .binnen{display:flex;align-items:center;gap:20px;min-height:84px}
+.merk{display:flex;align-items:center}.merk img{display:block;height:64px;width:auto}
+.kop nav{margin-left:auto;display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.kop nav a{color:var(--inkt);text-decoration:none;font-size:18px;font-weight:600;padding:10px 14px;border-radius:999px}
+.kop nav a:hover{background:var(--groen-licht)}
+.kop nav a[aria-current=page]{background:var(--donker);color:#fff}
+.kop nav a.portaal{border:1.5px solid var(--groen);color:var(--groen-donker);margin-left:8px}
+.menuknop{display:none;margin-left:auto;font:600 18px 'Barlow Semi Condensed',sans-serif;padding:11px 18px;border:1.5px solid var(--inkt);border-radius:999px;cursor:pointer}
+
+/* knoppen */
+.knop{display:inline-block;text-decoration:none;font-size:19px;font-weight:600;padding:13px 24px;border-radius:999px;border:1.5px solid var(--inkt);color:var(--inkt);background:transparent}
+.knop:hover{background:rgba(0,0,0,.06)}
+.knop.hoofd{background:var(--groen);border-color:var(--groen);color:#fff}.knop.hoofd:hover{background:var(--groen-donker)}
+.knoppen{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+
+/* held en paginakop */
+.boventitel{color:var(--groen-donker);font-weight:600;font-size:17px;letter-spacing:.06em;text-transform:uppercase;margin:0 0 12px}
+.intro{font-size:20px;color:var(--zacht);max-width:60ch}
+.held{padding:64px 0 56px}
+.held .binnen{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
+.paginakop{padding:56px 0 20px}
+.sectie{padding:52px 0}
+.sectie.licht{background:var(--vlak);border-top:1px solid var(--lijn);border-bottom:1px solid var(--lijn)}
+.sectie.donker{background:var(--donker);color:#fff}
+.smal{max-width:70ch}
+
+/* foto's: een grijs vlak zolang de foto er niet is */
+.foto{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:10px;background:#dfe5de}
+.foto.groot{aspect-ratio:5/4}
+.foto.leeg{display:flex;align-items:center;justify-content:center;text-align:center;border:1.5px dashed #aab5aa;color:var(--zacht);font-size:15px;padding:16px;background:repeating-linear-gradient(135deg,#e9ede8,#e9ede8 14px,#e2e7e1 14px,#e2e7e1 28px)}
+
+/* kaarten, punten, stappen */
+.kaarten{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.kaart{background:var(--vlak);border:1px solid var(--lijn);border-radius:12px;padding:24px;display:flex;flex-direction:column}
+.kaart .foto{margin:-24px -24px 18px;width:calc(100% + 48px);max-width:none;border-radius:12px 12px 0 0}
+.kaart p{color:var(--zacht);margin-bottom:10px}
+.kaart a{margin-top:auto;font-weight:600;text-decoration:none}
+.kaart a:hover{text-decoration:underline}
+.punten{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:28px}
+.punten b{font:600 21px 'Barlow Semi Condensed',sans-serif;display:block;padding-top:14px;border-top:3px solid var(--groen);margin-bottom:6px}
+.punten p{color:var(--zacht);margin:0}
+.stappen{list-style:none;counter-reset:stap;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px 32px}
+.stappen li{counter-increment:stap;position:relative;padding-left:60px}
+.stappen li::before{content:counter(stap);position:absolute;left:0;top:0;width:44px;height:44px;border-radius:50%;background:var(--groen);color:#fff;font:700 22px/44px 'Barlow Semi Condensed',sans-serif;text-align:center}
+.stappen b{font:600 21px 'Barlow Semi Condensed',sans-serif;display:block}
+.stappen p{color:var(--zacht);margin:4px 0 0}
+.tweekol{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.oproep{display:flex;justify-content:space-between;align-items:center;gap:28px;flex-wrap:wrap}
+.oproep h2{margin-bottom:6px}.oproep p{margin:0;color:#c9d6cd;font-size:19px}
+.oproep .knoppen{margin-top:0}
+.sectie.donker .knop{color:#fff;border-color:#fff}.sectie.donker .knop:hover{background:rgba(255,255,255,.12)}
+.sectie.donker .knop.hoofd{border-color:var(--groen)}
+
+/* contact */
+.contactblok p{margin-bottom:22px}
+.contactblok span{display:block;color:var(--zacht);font-size:15px;text-transform:uppercase;letter-spacing:.06em}
+.grootlink{font:600 28px 'Barlow Semi Condensed',sans-serif;text-decoration:none;word-break:break-word}
+.kader{background:var(--vlak);border:1px solid var(--lijn);border-radius:12px;padding:24px}
+.kader ul{margin:0;padding-left:20px}.kader li{margin:6px 0}
+.nota{color:var(--zacht);font-size:15px;border-left:3px solid #c98a1b;padding-left:12px}
+
+/* formulier */
+.formulier label{display:block;font-weight:600;margin:0 0 14px}
+.formulier input:not([type=checkbox]),.formulier select,.formulier textarea{display:block;width:100%;margin-top:5px;font:inherit;font-weight:400;padding:11px 12px;min-height:46px;border:1.5px solid #9aa79d;border-radius:8px;background:#fff;color:var(--inkt)}
+.formulier textarea{resize:vertical}
+.formulier input:focus,.formulier select:focus,.formulier textarea:focus{outline:3px solid var(--groen);outline-offset:1px;border-color:var(--groen)}
+.formulier .vink{font-weight:400;display:flex;gap:10px;align-items:flex-start}.formulier .vink input{width:22px;height:22px;margin-top:3px;flex:none}
+.formulier .niet-invullen{position:absolute;left:-9999px}
+.formulier button{cursor:pointer;font-family:'Barlow Semi Condensed',sans-serif}
+.formulier button[disabled]{opacity:.6}
+.klein{font-size:15px;color:var(--zacht);font-weight:400}
+#f-melding{margin:14px 0 0;font-weight:600}#f-melding.goed{color:var(--groen-donker)}#f-melding.fout{color:#B3261E}
+.particulier{margin-top:8px;border-left:4px solid var(--groen)}
+.particulier .knop{margin-top:6px}
+.tabelwrap{overflow-x:auto}
+table.formaten{border-collapse:collapse;width:100%;max-width:720px;background:var(--vlak);border:1px solid var(--lijn)}
+table.formaten th,table.formaten td{text-align:left;padding:12px 16px;border-top:1px solid var(--lijn)}
+table.formaten th{font-family:'Barlow Semi Condensed',sans-serif;font-size:18px;border-top:0}
+
+/* voet */
+.voet{background:var(--vlak);border-top:1px solid var(--lijn);padding:36px 0;font-size:16px;color:var(--zacht)}
+.voet .binnen{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:24px}
+.voet a{color:var(--inkt);text-decoration:none;display:inline-block;padding:3px 0}.voet a:hover{text-decoration:underline}
+.voet b{color:var(--inkt)}
+
+a:focus-visible,.menuknop:focus-visible{outline:3px solid var(--groen);outline-offset:2px}
+
+@media (max-width:860px){
+  .held{padding:36px 0}.held .binnen,.tweekol{grid-template-columns:1fr;gap:26px}
+  .paginakop{padding:36px 0 8px}.sectie{padding:38px 0}
+  .kop .binnen{flex-wrap:wrap;min-height:72px;gap:10px}.merk img{height:54px}
+  .menuknop{display:block}
+  .kop nav{display:none;width:100%;flex-direction:column;align-items:stretch;padding:6px 0 14px;margin:0}
+  #menuknop:checked ~ nav{display:flex}
+  .kop nav a{padding:13px 14px;font-size:20px}.kop nav a.portaal{margin:6px 0 0;text-align:center}
+  .knop{flex:1 1 auto;text-align:center}
+  .voet a{padding:9px 0}
+  .kaart a,.contactblok a,.smal a{display:inline-block;padding:9px 0}
+}
