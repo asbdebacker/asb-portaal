@@ -94,6 +94,22 @@ table.formaten{border-collapse:collapse;width:100%;max-width:720px;background:va
 table.formaten th,table.formaten td{text-align:left;padding:12px 16px;border-top:1px solid var(--lijn)}
 table.formaten th{font-family:'Barlow Semi Condensed',sans-serif;font-size:18px;border-top:0}
 
+/* klantenportaal */
+.ptbalk{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:10px}
+.ptbalk b{font:600 24px 'Barlow Semi Condensed',sans-serif}
+button.knop{cursor:pointer;font-family:'Barlow Semi Condensed',sans-serif}
+.ptlijst{display:grid;gap:16px;margin:18px 0 26px}
+.ptproject{background:var(--vlak);border:1px solid var(--lijn);border-radius:12px;padding:22px 24px}
+.ptkop{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.ptkop h3{margin:0;word-break:break-word}
+.ptstappen{list-style:none;margin:0 0 10px;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.ptstappen li{border-top:6px solid var(--lijn);padding-top:8px;color:var(--zacht);font:600 17px 'Barlow Semi Condensed',sans-serif}
+.ptstappen li.klaar{border-color:var(--groen);color:var(--inkt)}
+.ptstappen li.nu{border-color:var(--groen-donker);color:var(--groen-donker)}
+.ptstappen li.nu span::before{content:'● '}
+.ptstappen li.klaar span::before{content:'✓ '}
+.ptproject p{margin:0}
+
 /* voet */
 .voet{background:var(--vlak);border-top:1px solid var(--lijn);padding:36px 0;font-size:16px;color:var(--zacht)}
 .voet .binnen{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:24px}

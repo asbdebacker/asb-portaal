@@ -6,6 +6,7 @@
 // De berichten komen in berichten.json. Ze worden NOG NIET doorgemaild: dat is de volgende stap (zie LEESMIJ.txt).
 'use strict';
 const http = require('http'), fs = require('fs'), path = require('path'), crypto = require('crypto');
+const PORTAAL = require('./portaal.js');                                          // het klantenportaal (zie portaal.js)
 const POORT = parseInt(process.env.PORT || '3000', 10);
 const SITE = path.join(__dirname, 'site');
 const MAP = process.env.BERICHTEN_MAP || path.join(__dirname, 'gegevens');
@@ -36,6 +37,7 @@ function bewaar(b) {
 const server = http.createServer(async (req, res) => {
   let pad; try { pad = decodeURIComponent(new URL(req.url, 'http://x').pathname); } catch (e) { res.writeHead(400); return res.end('Ongeldig adres'); }
   try {
+    if (await PORTAAL.behandel(req, res, pad)) return;
     if (pad === '/api/contact') {
       if (req.method !== 'POST') return stuur(res, 405, { fout: 'Alleen versturen.' });
       let b; try { b = JSON.parse(await lees(req)); } catch (e) { return stuur(res, 400, { fout: 'Het bericht kon niet gelezen worden.' }); }

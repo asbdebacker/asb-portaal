@@ -2,7 +2,7 @@
   "name": "asb-portaal-test",
   "version": "0.1.0",
   "private": true,
-  "description": "Minimale testapplicatie voor de Node.js-hosting. Bevat alleen verzonnen testgegevens.",
+  "description": "Website en klantenportaal van ASB De Backer.",
   "main": "server.js",
   "scripts": {
     "build": "npm ci --omit=dev",

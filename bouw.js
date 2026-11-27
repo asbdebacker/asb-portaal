@@ -110,7 +110,7 @@ ${sectie('Zo werkt het', `<ol class="stappen">
   <li><b>Productie in ons atelier</b><p>Elk onderdeel krijgt een etiket met uw referentie, zodat u bij de montage niet moet zoeken.</p></li>
   <li><b>U haalt af</b><p>Uw bestelling staat klaar in Herenthout. Wij verwittigen u zodra u ze kunt ophalen.</p></li>
 </ol>`, 'licht')}
-${sectie('Klantenportaal', `<p class="smal">Wij bouwen aan een portaal voor onze vaste klanten. U zult er de stand van uw projecten kunnen volgen, en later ook zaaglijsten kunnen bestellen.</p><div class="knoppen">${knop('portaal.html', 'Meer over het portaal')}</div>`)}
+${sectie('Klantenportaal', `<p class="smal">Vaste klanten volgen in ons portaal de stand van hun projecten. Later kunt u er ook zaaglijsten bestellen.</p><div class="knoppen">${knop('portaal.html', 'Naar het portaal')}</div>`)}
 ${afsluiter('Werkt u aan een project?', 'Stuur uw tekening of lijst door. Wij bekijken wat wij voor u kunnen maken.')}
 `];
 
@@ -191,16 +191,63 @@ ${FORMULIER_AAN ? `<script>
 </script>` : ""}`)}
 `];
 
-P['portaal.html'] = ['Klantenportaal', 'Het klantenportaal van ASB De Backer voor vaste zakelijke klanten is in opbouw.', `
-<section class="paginakop"><div class="binnen"><p class="boventitel">Klantenportaal</p><h1>In opbouw</h1>
-<p class="intro">Wij bouwen aan een portaal voor onze vaste zakelijke klanten. U zult er de stand van uw projecten kunnen volgen. Later komen daar het bestellen van zaaglijsten en een configurator bij.</p>
-<div class="knoppen">${knop('contact.html', 'Neem contact op', 'hoofd')}</div></div></section>
+P['portaal.html'] = ['Klantenportaal', 'Het klantenportaal van ASB De Backer: vaste zakelijke klanten volgen er de stand van hun projecten.', `
+<section class="paginakop"><div class="binnen"><p class="boventitel">Klantenportaal</p><h1 id="pt-titel">Klantenportaal</h1>
+<p class="intro" id="pt-intro">Even geduld…</p>
+<div id="pt-buiten" hidden>
+<p class="smal">Het portaal is er voor onze vaste zakelijke klanten. U volgt er de stand van uw projecten. Aanmelden doet u met de persoonlijke link die u van ons kreeg; bewaar die link bij uw favorieten.</p>
+<p class="smal">Hebt u nog geen link, of werkt uw link niet meer? Neem contact met ons op.</p>
+<div class="knoppen">${knop('contact.html', 'Neem contact op', 'hoofd')}${knop('tel:' + BEDRIJF.telLink, BEDRIJF.tel)}</div>
+</div></div></section>
+<section class="sectie" id="pt-binnen" hidden><div class="binnen">
+<div class="ptbalk"><div><b id="pt-klant"></b><br><span class="klein" id="pt-wie"></span></div><button type="button" class="knop" id="pt-uit">Afmelden</button></div>
+<p class="klein" id="pt-stand"></p>
+<div id="pt-lijst" class="ptlijst"></div>
+<p class="nota" id="pt-leeg" hidden>Er loopt op dit moment geen project van u in ons atelier. Mist u een project? Bel of mail ons.</p>
+<p class="klein">Dit overzicht toont de stand in ons atelier, zonder prijzen of documenten. Een vraag over een project? Bel ${BEDRIJF.tel} of mail <a href="mailto:${BEDRIJF.mail}">${BEDRIJF.mail}</a>.</p>
+</div></section>
+<script>
+(function(){
+  var $ = function(i){ return document.getElementById(i); };
+  var esc = function(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); };
+  var STAPPEN = ['In voorbereiding', 'In productie', 'Klaar om op te halen'];
+  var datum = function(t){ var d = new Date(t); return isNaN(d) ? '' : d.toLocaleDateString('nl-BE', {day: 'numeric', month: 'long', year: 'numeric'}); };
+  var moment = function(t){ var d = new Date(t); return isNaN(d) ? '' : d.toLocaleString('nl-BE', {day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit'}); };
+  var vraag = function(pad, methode, body){ return fetch(pad, {method: methode || 'GET', credentials: 'same-origin', headers: {'Content-Type': 'application/json'}, body: body ? JSON.stringify(body) : undefined}).then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ return {code: r.status, j: j}; }); }); };
+  function buiten(tekst){ $('pt-titel').textContent = 'Klantenportaal'; $('pt-intro').textContent = tekst || 'Volg de stand van uw projecten bij ASB De Backer.'; $('pt-buiten').hidden = false; $('pt-binnen').hidden = true; }
+  function toon(d){
+    $('pt-titel').textContent = 'Uw projecten'; $('pt-intro').textContent = ''; $('pt-intro').hidden = true; $('pt-buiten').hidden = true; $('pt-binnen').hidden = false;
+    $('pt-klant').textContent = d.klant; $('pt-wie').textContent = (d.naam ? d.naam + ' · ' : '') + d.mail;
+    $('pt-stand').textContent = d.bijgewerkt ? 'Laatst bijgewerkt: ' + moment(d.bijgewerkt) + (d.oud ? '. Let op: dit overzicht is al even niet vernieuwd.' : '.') : '';
+    $('pt-leeg').hidden = d.projecten.length > 0;
+    $('pt-lijst').innerHTML = d.projecten.map(function(p){
+      return '<article class="ptproject"><div class="ptkop"><h3>' + esc(p.ref || p.code) + '</h3><span class="klein">' + esc(p.code) + '</span></div>'
+        + '<ol class="ptstappen">' + STAPPEN.map(function(s, i){ var n = i + 1; return '<li class="' + (n < p.stap ? 'klaar' : n === p.stap ? 'nu' : '') + '"' + (n === p.stap ? ' aria-current="step"' : '') + '><span>' + s + '</span></li>'; }).join('') + '</ol>'
+        + '<p class="klein">' + esc(STAPPEN[p.stap - 1] || '') + (p.sinds && datum(p.sinds) ? ' sinds ' + datum(p.sinds) : '') + '</p></article>';
+    }).join('');
+  }
+  function laad(){ return vraag('/api/portaal/mijn').then(function(r){ if (r.code === 200) toon(r.j); else buiten(r.code === 401 ? '' : 'Het portaal is even niet bereikbaar. Probeer het later opnieuw.'); }).catch(function(){ buiten('Het portaal is even niet bereikbaar. Probeer het later opnieuw.'); }); }
+  $('pt-uit').addEventListener('click', function(){ vraag('/api/portaal/uit', 'POST', {}).then(function(){ buiten('U bent afgemeld.'); $('pt-intro').hidden = false; }); });
+  // de persoonlijke link eindigt op #t=...: dat stuk gaat niet mee naar de server bij het openen en verdwijnt meteen uit de adresbalk
+  function begin(){
+    var m = /^#t=([A-Za-z0-9_-]{20,200})$/.exec(location.hash);
+    if (!m) return false;
+    history.replaceState(null, '', location.pathname); $('pt-intro').hidden = false;
+    vraag('/api/portaal/in', 'POST', {t: m[1]}).then(function(r){ if (r.code === 200) return laad(); buiten(r.j.fout || 'Deze link werkt niet (meer). Neem contact met ons op voor een nieuwe link.'); }).catch(function(){ buiten('Het portaal is even niet bereikbaar. Probeer het later opnieuw.'); });
+    return true;
+  }
+  // ook als de link geplakt wordt terwijl deze pagina al open staat
+  window.addEventListener('hashchange', begin);
+  if (!begin()) laad();
+})();
+</script>
 `];
 
 P['privacy.html'] = ['Privacy', 'Hoe ASB De Backer omgaat met uw gegevens.', `
 <section class="paginakop"><div class="binnen"><p class="boventitel">Privacy</p><h1>Uw gegevens</h1></div></section>
 ${sectie('', `<div class="smal">
-<p>Deze website plaatst geen cookies en volgt uw bezoek niet. De lettertypes worden geladen van Google Fonts.</p>
+<p>Deze website volgt uw bezoek niet en plaatst geen cookies, met één uitzondering: als u zich aanmeldt in het klantenportaal, plaatsen wij één cookie om u aangemeld te houden. De lettertypes worden geladen van Google Fonts.</p>
+<p>In het klantenportaal bewaren wij van vaste zakelijke klanten de bedrijfsnaam, de naam en het e-mailadres van de contactpersoon, en van hun projecten de code, de referentie en de stand in ons atelier. Die gegevens staan bij onze hostingpartner in België en zijn alleen zichtbaar voor de klant zelf.</p>
 <p>Als u ons belt, mailt of het contactformulier invult, gebruiken wij uw gegevens alleen om uw vraag te beantwoorden, een offerte te maken en een opdracht uit te voeren. Wij geven ze niet door aan anderen, behalve als dat nodig is om uw opdracht uit te voeren of als de wet het ons verplicht.</p>
 <p>U kunt uw gegevens laten inkijken, verbeteren of verwijderen. Stuur daarvoor een mail naar <a href="mailto:${BEDRIJF.mail}">${BEDRIJF.mail}</a>.</p>
 <p>Verantwoordelijke: ${BEDRIJF.naam}, ${BEDRIJF.straat}, ${BEDRIJF.gemeente}, ${esc(BEDRIJF.btw)}.</p>
