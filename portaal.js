@@ -147,10 +147,19 @@ function schoonOpnieuw(b, codes) {
 }
 const titelVan = a => a.soort === 'zaaglijst' ? `Zaaglijst ${a.ref} (${a.regels.length} ${a.regels.length === 1 ? 'regel' : 'regels'}, ${a.regels.reduce((t, r) => t + r.aantal, 0)} stukken)` : `Stuk opnieuw: ${a.aantal} × ${a.stuk.split('\n')[0].slice(0, 80)}`;
 // alleen verzoeken van de eigen site: JSON, en als de browser zegt vanwaar het komt, moet dat deze site zijn
+// Bij de hosting staat er een tussenserver voor de toepassing: de kop Host is daar niet het adres van de site (vastgesteld
+// op 27/11/2026: elk verzoek uit een browser werd geweigerd). Daarom, in deze volgorde:
+//   1. zegt de browser zelf "same-origin" (Sec-Fetch-Site, niet te vervalsen door een script), dan is het goed;
+//   2. anders moet de herkomst (Origin) een van onze eigen adressen zijn, of het adres waarop de toepassing zelf antwoordt.
+const EIGEN_ADRESSEN = String(process.env.PORTAAL_ADRESSEN || 'asbdebacker.eu,www.asbdebacker.eu,asbdebacker.be,www.asbdebacker.be,portaal.asbdebacker.be').split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
 function eigenVerzoek(req) {
   if (!/application\/json/i.test(String(req.headers['content-type'] || ''))) return false;
+  const sfs = String(req.headers['sec-fetch-site'] || '').toLowerCase();
+  if (sfs) return sfs === 'same-origin';
   const o = req.headers.origin; if (!o) return true;
-  try { return new URL(o).host === String(req.headers.host || ''); } catch (e) { return false; }
+  let host; try { host = new URL(o).host.toLowerCase(); } catch (e) { return false; }
+  const hier = [req.headers.host, req.headers['x-forwarded-host']].map(h => String(h || '').split(',')[0].trim().toLowerCase()).filter(Boolean);
+  return hier.includes(host) || EIGEN_ADRESSEN.includes(host);
 }
 
 const prijsTel = new Map();                                                    // hoogstens 400 berekeningen per tien minuten per account
