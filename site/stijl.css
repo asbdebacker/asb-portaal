@@ -109,6 +109,52 @@ button.knop{cursor:pointer;font-family:'Barlow Semi Condensed',sans-serif}
 .ptstappen li.nu span::before{content:'● '}
 .ptstappen li.klaar span::before{content:'✓ '}
 .ptproject p{margin:0}
+.ptvak{background:var(--vlak);border:1px solid var(--lijn);border-radius:12px;padding:24px;margin:18px 0}
+.ptvak h3{margin-bottom:10px}
+.pttwee{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}
+.formulier [hidden]{display:none !important}
+.ptregel{display:grid;grid-template-columns:28px 2.4fr .9fr .9fr .7fr 1.4fr 34px;gap:0 10px;align-items:end;padding:10px 0 4px;border-top:1px solid var(--lijn)}
+.ptregel label{margin-bottom:8px;font-size:15px}
+.ptregel .ptnr{font:600 18px 'Barlow Semi Condensed',sans-serif;color:var(--zacht);padding-bottom:20px}
+.ptkanten{display:flex;flex-wrap:wrap;gap:4px 16px;align-items:center;font-size:15px;margin-bottom:8px}
+.ptkanten span{font-weight:600}
+.ptkanten label{display:inline-flex;align-items:center;gap:6px;margin:0;font-weight:400;min-height:34px}
+.ptkanten input{width:20px;height:20px}
+.ptweg{width:34px;height:46px;margin-bottom:8px;border:1.5px solid #9aa79d;border-radius:8px;background:#fff;font-size:22px;line-height:1;color:var(--zacht);cursor:pointer}
+.ptstock{display:inline-flex;align-items:center;gap:7px;font-size:14px;font-weight:600;white-space:nowrap;margin-bottom:8px}
+.ptstock::before{content:'';width:13px;height:13px;border-radius:50%;background:#B3261E;flex:none}
+.ptstock.ja::before{background:var(--groen)}
+.ptstock.nee{color:#B3261E}.ptstock.ja{color:var(--groen-donker)}
+.ptprijs{background:var(--blad);border-left:4px solid var(--groen);padding:12px 16px;border-radius:0 8px 8px 0;margin:10px 0 0}
+.ptprijs b{font:600 21px 'Barlow Semi Condensed',sans-serif}
+@media (min-width:861px){
+  .ptregel .ptnr{grid-column:1;grid-row:1}.ptregel .v-mat{grid-column:2;grid-row:1}.ptregel .v-l{grid-column:3;grid-row:1}.ptregel .v-b{grid-column:4;grid-row:1}
+  .ptregel .v-aantal{grid-column:5;grid-row:1}.ptregel .v-ref{grid-column:6;grid-row:1}.ptregel .ptweg{grid-column:7;grid-row:1}
+  .ptregel .v-materiaal{grid-column:2;grid-row:2}.ptregel .v-dikte{grid-column:3;grid-row:2}
+  .geenlijst .ptregel .v-materiaal{grid-row:1}.geenlijst .ptregel .v-dikte{grid-column:2}
+  .ptregel .ptstock{grid-column:4 / 8;grid-row:2;justify-self:end;align-self:center}
+  .ptregel .ptkanten{grid-column:2 / -1;grid-row:3}
+}
+.ptkeuze{border:0;padding:0;margin:0 0 14px}.ptkeuze legend{font-weight:600;padding:0;margin-bottom:6px}.ptkeuze .vink{margin-bottom:6px;align-items:center}
+.formulier .ptkeuze input[type=radio]{display:inline-block;width:22px;height:22px;min-height:0;margin:0;padding:0;flex:none}
+.ptgelukt{background:var(--groen-licht);color:var(--groen-donker);font-weight:600;padding:14px 18px;border-radius:10px;margin:16px 0 0}
+.ptstatus{display:inline-block;padding:2px 10px;border-radius:999px;font-size:14px;font-weight:600;background:#e9ede8;color:var(--inkt);margin-left:6px}
+.ptstatus.bezig{background:#fdf0d5;color:#7a4f00}.ptstatus.klaar{background:var(--groen-licht);color:var(--groen-donker)}.ptstatus.spoed{background:#fde8e6;color:#B3261E}
+.ptantwoord{margin:8px 0 0;padding:10px 14px;background:var(--blad);border-left:3px solid var(--groen);border-radius:0 8px 8px 0}
+@media (max-width:860px){
+  .pttwee{grid-template-columns:1fr}
+  .ptregel{grid-template-columns:1fr 1fr 1fr}
+  .ptregel .ptnr{grid-column:1;grid-row:1;padding:0 0 4px}.ptregel .ptstock{grid-column:2;grid-row:1;margin:0 0 4px}.ptregel .ptweg{grid-column:3;grid-row:1;justify-self:end;height:38px;margin:0 0 4px}
+  .ptregel .v-mat,.ptregel .v-materiaal,.ptregel .v-ref,.ptregel .ptkanten{grid-column:1 / -1}
+  .ptvak{padding:18px 16px}
+}
+.ptaanmelden{max-width:420px;margin:22px 0 26px}
+.ptaanmelden button{margin-top:4px;min-height:50px}
+.ptfout{color:#B3261E;font-weight:600;margin:14px 0 0}
+.ptaf{font-size:24px;margin:8px 0 12px}
+.ptaflijst{list-style:none;margin:0 0 26px;padding:0;background:var(--vlak);border:1px solid var(--lijn);border-radius:12px}
+.ptaflijst li{padding:14px 24px;border-top:1px solid var(--lijn)}.ptaflijst li:first-child{border-top:0}
+.ptaflijst b{font:600 19px 'Barlow Semi Condensed',sans-serif}
 
 /* voet */
 .voet{background:var(--vlak);border-top:1px solid var(--lijn);padding:36px 0;font-size:16px;color:var(--zacht)}

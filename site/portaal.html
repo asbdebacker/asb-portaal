@@ -22,16 +22,54 @@
 <section class="paginakop"><div class="binnen"><p class="boventitel">Klantenportaal</p><h1 id="pt-titel">Klantenportaal</h1>
 <p class="intro" id="pt-intro">Even geduld…</p>
 <div id="pt-buiten" hidden>
-<p class="smal">Het portaal is er voor onze vaste zakelijke klanten. U volgt er de stand van uw projecten. Aanmelden doet u met de persoonlijke link die u van ons kreeg; bewaar die link bij uw favorieten.</p>
-<p class="smal">Hebt u nog geen link, of werkt uw link niet meer? Neem contact met ons op.</p>
-<div class="knoppen"><a class="knop hoofd" href="contact.html">Neem contact op</a><a class="knop " href="tel:+3214217331">014 21 73 31</a></div>
+<form class="formulier ptaanmelden" id="pt-form" novalidate>
+<label>E-mailadres<input type="email" id="pt-mail" autocomplete="username" maxlength="120" required></label>
+<label>Wachtwoord<input type="password" id="pt-ww" autocomplete="current-password" maxlength="200" required></label>
+<button type="submit" class="knop hoofd" id="pt-in">Aanmelden</button>
+<p id="pt-fout" class="ptfout" role="alert" hidden></p>
+</form>
+<p class="smal klein">Het portaal is er voor onze vaste zakelijke klanten. Hebt u nog geen wachtwoord, of bent u het vergeten? Bel 014 21 73 31 of mail <a href="mailto:info@asbdebacker.be">info@asbdebacker.be</a>; wij bezorgen u een nieuw.</p>
 </div></div></section>
 <section class="sectie" id="pt-binnen" hidden><div class="binnen">
+<p class="nota" id="pt-bureau" hidden>U bekijkt dit account als ASB De Backer, met het universele wachtwoord. Dit is wat de klant ziet.</p>
 <div class="ptbalk"><div><b id="pt-klant"></b><br><span class="klein" id="pt-wie"></span></div><button type="button" class="knop" id="pt-uit">Afmelden</button></div>
 <p class="klein" id="pt-stand"></p>
 <div id="pt-lijst" class="ptlijst"></div>
 <p class="nota" id="pt-leeg" hidden>Er loopt op dit moment geen project van u in ons atelier. Mist u een project? Bel of mail ons.</p>
+<div id="pt-af" hidden><h2 class="ptaf">Afgewerkt in de laatste drie maanden</h2><ul id="pt-aflijst" class="ptaflijst"></ul></div>
 <p class="klein">Dit overzicht toont de stand in ons atelier, zonder prijzen of documenten. Een vraag over een project? Bel 014 21 73 31 of mail <a href="mailto:info@asbdebacker.be">info@asbdebacker.be</a>.</p>
+
+<h2 class="ptaf" style="margin-top:34px">Iets aanvragen</h2>
+<div class="knoppen" style="margin-top:0"><button type="button" class="knop hoofd" id="pt-k-zaag">Zaaglijst bestellen</button><button type="button" class="knop" id="pt-k-opn">Stuk opnieuw bestellen</button></div>
+<p id="pt-gelukt" class="ptgelukt" role="status" hidden></p>
+
+<form class="formulier ptvak" id="pt-zaag" hidden novalidate>
+<h3>Zaaglijst bestellen</h3>
+<p class="klein">Alle maten in millimeter, afgewerkte maat. Kanten: L1 en L2 zijn de lange zijden, B1 en B2 de korte zijden; vink aan waar kantenband moet komen. Dit is een aanvraag: wij bevestigen prijs en termijn voor wij beginnen te zagen.</p>
+<div class="pttwee"><label>Uw referentie<input type="text" id="z-ref" maxlength="80"></label><label>Gewenst tegen <span class="klein">(niet verplicht)</span><input type="date" id="z-gewenst"></label></div>
+<div id="z-regels"></div>
+<div class="knoppen" style="margin:6px 0 18px"><button type="button" class="knop" id="z-bij">Regel toevoegen</button><button type="button" class="knop" id="z-kopie">Laatste regel kopiëren</button></div>
+<label>Opmerking <span class="klein">(niet verplicht)</span><textarea id="z-opm" rows="3" maxlength="1000"></textarea></label>
+<p id="z-som" class="klein"></p>
+<p id="z-prijs" class="ptprijs" role="status" hidden></p>
+<p id="z-fout" class="ptfout" role="alert" hidden></p>
+<div class="knoppen"><button type="submit" class="knop hoofd" id="z-ok">Verstuur de zaaglijst</button><button type="button" class="knop" data-sluit>Annuleren</button></div>
+</form>
+
+<form class="formulier ptvak" id="pt-opn" hidden novalidate>
+<h3>Stuk opnieuw bestellen</h3>
+<p class="klein">Voor een stuk dat opnieuw gemaakt moet worden. Dit is een aanvraag: wij bevestigen wat wij doen en tegen wanneer.</p>
+<label>Project<select id="o-code"></select></label>
+<label id="o-projectvak" hidden>Over welk project gaat het?<input type="text" id="o-project" maxlength="80"></label>
+<label>Welk stuk? <span class="klein">Het nummer op het etiket, of de naam en de maten.</span><textarea id="o-stuk" rows="3" maxlength="300"></textarea></label>
+<div class="pttwee"><label>Aantal<input type="number" id="o-aantal" min="1" max="50" value="1" inputmode="numeric"></label><label>Reden<select id="o-reden"></select></label></div>
+<fieldset class="ptkeuze"><legend>Hoe dringend is het?</legend><div id="o-urgentie"></div></fieldset>
+<label>Toelichting <span class="klein" id="o-toel-uitleg">(niet verplicht)</span><textarea id="o-toel" rows="3" maxlength="1000"></textarea></label>
+<p id="o-fout" class="ptfout" role="alert" hidden></p>
+<div class="knoppen"><button type="submit" class="knop hoofd" id="o-ok">Verstuur de aanvraag</button><button type="button" class="knop" data-sluit>Annuleren</button></div>
+</form>
+
+<div id="pt-av" hidden><h2 class="ptaf" style="margin-top:34px">Uw aanvragen</h2><ul id="pt-avlijst" class="ptaflijst"></ul></div>
 </div></section>
 <script>
 (function(){
@@ -41,31 +79,159 @@
   var datum = function(t){ var d = new Date(t); return isNaN(d) ? '' : d.toLocaleDateString('nl-BE', {day: 'numeric', month: 'long', year: 'numeric'}); };
   var moment = function(t){ var d = new Date(t); return isNaN(d) ? '' : d.toLocaleString('nl-BE', {day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit'}); };
   var vraag = function(pad, methode, body){ return fetch(pad, {method: methode || 'GET', credentials: 'same-origin', headers: {'Content-Type': 'application/json'}, body: body ? JSON.stringify(body) : undefined}).then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){ return {code: r.status, j: j}; }); }); };
-  function buiten(tekst){ $('pt-titel').textContent = 'Klantenportaal'; $('pt-intro').textContent = tekst || 'Volg de stand van uw projecten bij ASB De Backer.'; $('pt-buiten').hidden = false; $('pt-binnen').hidden = true; }
+  function buiten(tekst){ $('pt-titel').textContent = 'Klantenportaal'; $('pt-intro').textContent = tekst || 'Meld u aan om de stand van uw projecten te volgen.'; $('pt-intro').hidden = false; $('pt-buiten').hidden = false; $('pt-binnen').hidden = true; }
   function toon(d){
     $('pt-titel').textContent = 'Uw projecten'; $('pt-intro').textContent = ''; $('pt-intro').hidden = true; $('pt-buiten').hidden = true; $('pt-binnen').hidden = false;
+    $('pt-bureau').hidden = !d.alsBureau; $('pt-ww').value = '';
     $('pt-klant').textContent = d.klant; $('pt-wie').textContent = (d.naam ? d.naam + ' · ' : '') + d.mail;
     $('pt-stand').textContent = d.bijgewerkt ? 'Laatst bijgewerkt: ' + moment(d.bijgewerkt) + (d.oud ? '. Let op: dit overzicht is al even niet vernieuwd.' : '.') : '';
-    $('pt-leeg').hidden = d.projecten.length > 0;
-    $('pt-lijst').innerHTML = d.projecten.map(function(p){
+    var lopend = d.projecten.filter(function(p){ return p.stap !== 4; }), af = d.projecten.filter(function(p){ return p.stap === 4; });
+    $('pt-leeg').hidden = lopend.length > 0;
+    $('pt-af').hidden = af.length === 0;
+    $('pt-aflijst').innerHTML = af.map(function(p){ return '<li><b>' + esc(p.ref || p.code) + '</b> <span class="klein">' + esc(p.code) + (datum(p.sinds) ? ' · afgewerkt op ' + datum(p.sinds) : '') + '</span></li>'; }).join('');
+    $('pt-lijst').innerHTML = lopend.map(function(p){
       return '<article class="ptproject"><div class="ptkop"><h3>' + esc(p.ref || p.code) + '</h3><span class="klein">' + esc(p.code) + '</span></div>'
         + '<ol class="ptstappen">' + STAPPEN.map(function(s, i){ var n = i + 1; return '<li class="' + (n < p.stap ? 'klaar' : n === p.stap ? 'nu' : '') + '"' + (n === p.stap ? ' aria-current="step"' : '') + '><span>' + s + '</span></li>'; }).join('') + '</ol>'
         + '<p class="klein">' + esc(STAPPEN[p.stap - 1] || '') + (p.sinds && datum(p.sinds) ? ' sinds ' + datum(p.sinds) : '') + '</p></article>';
     }).join('');
+    toonAanvragen(d);
   }
+
+  // ---------- aanvragen: zaaglijst bestellen, stuk opnieuw bestellen ----------
+  var AVSTAND = {verstuurd: 'Verstuurd', nieuw: 'Ontvangen door ASB De Backer', bezig: 'In behandeling', klaar: 'Afgehandeld'};
+  var laatste = null;
+  function toonAanvragen(d){
+    laatste = d;
+    $('pt-av').hidden = !d.aanvragen.length;
+    $('pt-avlijst').innerHTML = d.aanvragen.map(function(a){
+      return '<li><b>' + esc(a.titel) + '</b> <span class="ptstatus ' + esc(a.status) + '">' + esc(AVSTAND[a.status] || a.status) + '</span>'
+        + (a.urgentie && a.urgentie !== 'normaal' ? ' <span class="ptstatus spoed">' + esc((d.urgenties[a.urgentie] || '').split(':')[0]) + '</span>' : '')
+        + '<br><span class="klein">verstuurd op ' + esc(moment(a.tijd)) + '</span>' + (a.antwoord ? '<p class="ptantwoord"><b>Antwoord van ASB De Backer:</b> ' + esc(a.antwoord) + '</p>' : '') + '</li>';
+    }).join('');
+    // de keuzelijsten van het formulier "stuk opnieuw"
+    var was = $('o-code').value;
+    $('o-code').innerHTML = '<option value="">Kies het project</option>' + d.projecten.map(function(p){ return '<option value="' + esc(p.code) + '">' + esc(p.ref || p.code) + ' (' + esc(p.code) + ')</option>'; }).join('') + '<option value="*">Een ander project</option>';
+    $('o-code').value = was;
+    if (!$('o-reden').options.length) $('o-reden').innerHTML = '<option value="">Kies een reden</option>' + Object.keys(d.redenen).map(function(k){ return '<option value="' + k + '">' + esc(d.redenen[k]) + '</option>'; }).join('');
+    if (!$('o-urgentie').children.length) $('o-urgentie').innerHTML = Object.keys(d.urgenties).map(function(k, i){ return '<label class="vink"><input type="radio" name="o-urg" value="' + k + '"' + (i === 0 ? ' checked' : '') + '><span>' + esc(d.urgenties[k]) + '</span></label>'; }).join('');
+  }
+  var foutIn = function(id, t){ $(id).textContent = t || ''; $(id).hidden = !t; if (t) $(id).scrollIntoView({block: 'center'}); };
+  function open(welk){ $('pt-zaag').hidden = welk !== 'zaag'; $('pt-opn').hidden = welk !== 'opn'; $('pt-gelukt').hidden = true; if (welk) $(welk === 'zaag' ? 'pt-zaag' : 'pt-opn').scrollIntoView({block: 'start'}); }
+  function gelukt(tekst){ open(''); $('pt-gelukt').textContent = tekst; $('pt-gelukt').hidden = false; laad().then(function(){ $('pt-gelukt').hidden = false; $('pt-gelukt').scrollIntoView({block: 'center'}); }); }
+  $('pt-k-zaag').addEventListener('click', function(){ if (!$('z-regels').children.length) { regel(); regel(); regel(); } open('zaag'); });
+  $('pt-k-opn').addEventListener('click', function(){ open('opn'); });
+  Array.prototype.forEach.call(document.querySelectorAll('[data-sluit]'), function(k){ k.addEventListener('click', function(){ open(''); }); });
+
+  // de regels van de zaaglijst
+  // Materiaal: kiezen uit de lijst van ASB (dan kan er een richtprijs en een stockbolletje komen), of "ander materiaal" en zelf typen.
+  var VELDEN = [['materiaal', 'Welk materiaal?', 'text'], ['dikte', 'Dikte', 'dec'], ['l', 'Lengte', 'dec'], ['b', 'Breedte', 'dec'], ['aantal', 'Aantal', 'num'], ['ref', 'Referentie', 'text']];
+  function mats(){ return (laatste && laatste.materialen) || []; }
+  function anders(r){ var s = r.querySelector('[data-mat]'), zelf = !mats().length || s.value === '*'; r.querySelector('.v-materiaal').hidden = !zelf; r.querySelector('.v-dikte').hidden = !zelf; r.querySelector('.v-mat').hidden = !mats().length; r.className = 'ptregel' + (zelf ? ' zelf' : ''); }
+  function regel(van){
+    var r = document.createElement('div'); r.className = 'ptregel';
+    r.innerHTML = '<span class="ptnr"></span><span class="ptstock" hidden></span>'
+      + '<label class="v-mat">Materiaal<select data-mat><option value="">Kies het materiaal</option>' + mats().map(function(m){ return '<option value="' + esc(m.id) + '">' + esc(m.naam) + (new RegExp('(^|\\D)' + String(m.dikte).replace('.', '[.,]') + ' ?mm', 'i').test(m.naam) ? '' : ' · ' + String(m.dikte).replace('.', ',') + ' mm') + '</option>'; }).join('') + '<option value="*">Ander materiaal (prijs op aanvraag)</option></select></label>'
+      + VELDEN.map(function(v){ return '<label class="v-' + v[0] + '">' + v[1] + '<input data-v="' + v[0] + '" type="text"' + (v[2] === 'text' ? ' maxlength="' + (v[0] === 'ref' ? 60 : 80) + '"' : ' inputmode="' + (v[2] === 'num' ? 'numeric' : 'decimal') + '"') + '></label>'; }).join('')
+      + '<div class="ptkanten"><span>Kanten</span>' + ['l1', 'l2', 'b1', 'b2'].map(function(k){ return '<label><input type="checkbox" data-k="' + k + '">' + k.toUpperCase() + '</label>'; }).join('') + '<label class="ptnerf"><input type="checkbox" data-nerf>Nerf in de lengte</label></div>'
+      + '<button type="button" class="ptweg" aria-label="Regel verwijderen">×</button>';
+    if (van) {
+      r.querySelector('[data-mat]').value = van.querySelector('[data-mat]').value;
+      Array.prototype.forEach.call(van.querySelectorAll('input'), function(i, n){ var j = r.querySelectorAll('input')[n]; if (i.type === 'checkbox') j.checked = i.checked; else if (i.dataset.v !== 'ref') j.value = i.value; });
+    }
+    $('z-regels').className = mats().length ? '' : 'geenlijst';
+    anders(r); $('z-regels').appendChild(r); nummer(); return r;
+  }
+  function nummer(){ Array.prototype.forEach.call($('z-regels').children, function(r, i){ r.querySelector('.ptnr').textContent = i + 1; }); som(); }
+  // alle regels in de volgorde van het scherm, ook de lege (leeg: true), zodat het antwoord van de prijs bij de juiste regel komt
+  function alleRegels(){
+    return Array.prototype.map.call($('z-regels').children, function(r, i){
+      var o = {nr: i + 1, kanten: {}}, s = r.querySelector('[data-mat]').value; Array.prototype.forEach.call(r.querySelectorAll('[data-v]'), function(x){ o[x.dataset.v] = x.value.trim(); });
+      Array.prototype.forEach.call(r.querySelectorAll('[data-k]'), function(x){ o.kanten[x.dataset.k] = x.checked; }); o.nerf = r.querySelector('[data-nerf]').checked;
+      var zelf = !mats().length || s === '*'; o.mat = zelf ? '' : s; if (!zelf) { o.materiaal = ''; o.dikte = ''; }
+      o.leeg = !(o.mat || o.materiaal || o.l || o.b || o.aantal || o.dikte);                  // een volledig lege regel telt niet mee
+      return o;
+    });
+  }
+  function leesRegels(){ return alleRegels().filter(function(o){ return !o.leeg; }); }
+  // de richtprijs en het bolletje per regel: het portaal rekent, de klant ziet alleen het totaal
+  var prijsKlok = null, prijsNr = 0;
+  function vraagPrijs(){
+    clearTimeout(prijsKlok);
+    if (!mats().length) { $('z-prijs').hidden = true; return; }
+    prijsKlok = setTimeout(function(){
+      var mijn = ++prijsNr, rs = alleRegels();
+      vraag('/api/portaal/prijs', 'POST', {regels: rs.map(function(r){ return {mat: r.mat, l: r.l, b: r.b, aantal: r.aantal, nerf: r.nerf, kanten: r.kanten}; })}).then(function(a){
+        if (mijn !== prijsNr || a.code !== 200) return;                                    // intussen is er verder getypt
+        Array.prototype.forEach.call($('z-regels').children, function(r, i){ var b = r.querySelector('.ptstock'), s = (a.j.regels[i] || {}).stock; b.hidden = !s; b.className = 'ptstock ' + (s === 'ja' ? 'ja' : 'nee'); b.textContent = s === 'ja' ? 'Uit stock' : 'Langere levertijd'; b.title = s === 'ja' ? 'De platen voor deze regel liggen in onze stock.' : 'Voor deze regel moeten wij platen bestellen: reken op een langere levertijd.'; });
+        var p = $('z-prijs'); p.hidden = !a.j.geteld;
+        if (a.j.totaal != null) p.innerHTML = '<b>Richtprijs: ' + a.j.totaal.toLocaleString('nl-BE', {style: 'currency', currency: 'EUR'}) + '</b> excl. btw, onder voorbehoud van onze bevestiging. Berekend met volledige platen.';
+        else p.innerHTML = '<b>Prijs op aanvraag.</b> ' + a.j.waarom.map(esc).join(' ');
+      }).catch(function(){});
+    }, 500);
+  }
+  function som(){ var rs = leesRegels(), st = rs.reduce(function(t, r){ return t + (parseInt(r.aantal, 10) || 0); }, 0); $('z-som').textContent = rs.length ? rs.length + (rs.length === 1 ? ' regel, ' : ' regels, ') + st + (st === 1 ? ' stuk.' : ' stukken.') : ''; }
+  $('z-bij').addEventListener('click', function(){ regel().querySelector('input').focus(); });
+  $('z-kopie').addEventListener('click', function(){ var k = $('z-regels').children; regel(k.length ? k[k.length - 1] : null).querySelector('[data-v=l]').focus(); vraagPrijs(); });
+  $('z-regels').addEventListener('click', function(e){ if (e.target.className === 'ptweg') { e.target.parentNode.remove(); nummer(); } });
+  $('z-regels').addEventListener('input', function(){ som(); vraagPrijs(); });
+  $('z-regels').addEventListener('change', function(e){ if (e.target.hasAttribute('data-mat')) anders(e.target.parentNode.parentNode); som(); vraagPrijs(); });
+  $('z-regels').addEventListener('click', function(e){ if (e.target.className === 'ptweg') vraagPrijs(); });
+  $('pt-zaag').addEventListener('submit', function(e){
+    e.preventDefault(); foutIn('z-fout', '');
+    var rs = leesRegels(), g = function(v){ return parseFloat(String(v).replace(',', '.')); };
+    if (!$('z-ref').value.trim()) return foutIn('z-fout', 'Geef uw referentie voor deze zaaglijst.');
+    if (!rs.length) return foutIn('z-fout', 'Vul minstens één regel in.');
+    for (var i = 0; i < rs.length; i++) { var r = rs[i];
+      if (!r.mat && !r.materiaal) return foutIn('z-fout', 'Regel ' + r.nr + (mats().length ? ': kies het materiaal, of kies “Ander materiaal” en vul het in.' : ': vul het materiaal in.'));
+      if (!(g(r.l) > 0) || !(g(r.b) > 0)) return foutIn('z-fout', 'Regel ' + r.nr + ': vul de lengte en de breedte in.');
+      if (!(parseInt(r.aantal, 10) > 0)) return foutIn('z-fout', 'Regel ' + r.nr + ': vul het aantal in.'); }
+    $('z-ok').disabled = true;
+    vraag('/api/portaal/zaaglijst', 'POST', {ref: $('z-ref').value, gewenst: $('z-gewenst').value, opmerking: $('z-opm').value, regels: rs.map(function(r){ return {mat: r.mat, materiaal: r.materiaal, dikte: r.dikte, l: r.l, b: r.b, aantal: r.aantal, nerf: r.nerf, kanten: r.kanten, ref: r.ref}; })})
+      .then(function(r){ if (r.code !== 200) return foutIn('z-fout', r.code === 401 ? 'U bent niet meer aangemeld. Uw lijst staat nog op deze pagina: meld u aan in een ander tabblad en verstuur opnieuw.' : (r.j.fout || 'Versturen is niet gelukt. Probeer het opnieuw.'));
+        $('z-regels').innerHTML = ''; $('z-ref').value = ''; $('z-gewenst').value = ''; $('z-opm').value = ''; $('z-prijs').hidden = true; som();
+        gelukt('Uw zaaglijst is verstuurd. U ziet ze hieronder bij “Uw aanvragen”. Wij bevestigen prijs en termijn voor wij beginnen.'); })
+      .catch(function(){ foutIn('z-fout', 'Het portaal is even niet bereikbaar. Uw lijst staat nog op deze pagina: probeer het zo dadelijk opnieuw.'); })
+      .then(function(){ $('z-ok').disabled = false; });
+  });
+
+  // een melding verdwijnt zodra de klant verder invult
+  $('pt-zaag').addEventListener('input', function(){ $('z-fout').hidden = true; });
+  $('pt-opn').addEventListener('input', function(){ $('o-fout').hidden = true; });
+  $('pt-opn').addEventListener('change', function(){ $('o-fout').hidden = true; });
+
+  // een stuk opnieuw
+  $('o-code').addEventListener('change', function(){ $('o-projectvak').hidden = $('o-code').value !== '*'; });
+  $('o-reden').addEventListener('change', function(){ $('o-toel-uitleg').textContent = $('o-reden').value === 'anders' ? '(verplicht bij “Andere reden”)' : '(niet verplicht)'; });
+  $('pt-opn').addEventListener('submit', function(e){
+    e.preventDefault(); foutIn('o-fout', '');
+    var code = $('o-code').value, urg = document.querySelector('input[name=o-urg]:checked');
+    if (!code) return foutIn('o-fout', 'Kies het project.');
+    if (code === '*' && !$('o-project').value.trim()) return foutIn('o-fout', 'Schrijf over welk project het gaat.');
+    if ($('o-stuk').value.trim().length < 3) return foutIn('o-fout', 'Omschrijf het stuk: bv. het nummer op het etiket, of de naam en de maten.');
+    if (!$('o-reden').value) return foutIn('o-fout', 'Kies een reden.');
+    $('o-ok').disabled = true;
+    vraag('/api/portaal/opnieuw', 'POST', {code: code === '*' ? '' : code, project: code === '*' ? $('o-project').value : '', stuk: $('o-stuk').value, aantal: $('o-aantal').value, reden: $('o-reden').value, urgentie: urg ? urg.value : '', toelichting: $('o-toel').value})
+      .then(function(r){ if (r.code !== 200) return foutIn('o-fout', r.code === 401 ? 'U bent niet meer aangemeld. Meld u aan in een ander tabblad en verstuur opnieuw.' : (r.j.fout || 'Versturen is niet gelukt. Probeer het opnieuw.'));
+        $('o-stuk').value = ''; $('o-toel').value = ''; $('o-aantal').value = '1'; $('o-reden').value = ''; $('o-code').value = ''; $('o-project').value = ''; $('o-projectvak').hidden = true;
+        gelukt('Uw aanvraag is verstuurd. U ziet ze hieronder bij “Uw aanvragen”. Is het zeer dringend, bel ons dan ook op 014 21 73 31.'); })
+      .catch(function(){ foutIn('o-fout', 'Het portaal is even niet bereikbaar. Probeer het zo dadelijk opnieuw.'); })
+      .then(function(){ $('o-ok').disabled = false; });
+  });
+
   function laad(){ return vraag('/api/portaal/mijn').then(function(r){ if (r.code === 200) toon(r.j); else buiten(r.code === 401 ? '' : 'Het portaal is even niet bereikbaar. Probeer het later opnieuw.'); }).catch(function(){ buiten('Het portaal is even niet bereikbaar. Probeer het later opnieuw.'); }); }
   $('pt-uit').addEventListener('click', function(){ vraag('/api/portaal/uit', 'POST', {}).then(function(){ buiten('U bent afgemeld.'); $('pt-intro').hidden = false; }); });
-  // de persoonlijke link eindigt op #t=...: dat stuk gaat niet mee naar de server bij het openen en verdwijnt meteen uit de adresbalk
-  function begin(){
-    var m = /^#t=([A-Za-z0-9_-]{20,200})$/.exec(location.hash);
-    if (!m) return false;
-    history.replaceState(null, '', location.pathname); $('pt-intro').hidden = false;
-    vraag('/api/portaal/in', 'POST', {t: m[1]}).then(function(r){ if (r.code === 200) return laad(); buiten(r.j.fout || 'Deze link werkt niet (meer). Neem contact met ons op voor een nieuwe link.'); }).catch(function(){ buiten('Het portaal is even niet bereikbaar. Probeer het later opnieuw.'); });
-    return true;
-  }
-  // ook als de link geplakt wordt terwijl deze pagina al open staat
-  window.addEventListener('hashchange', begin);
-  if (!begin()) laad();
+  var meld = function(t){ $('pt-fout').textContent = t || ''; $('pt-fout').hidden = !t; };
+  $('pt-form').addEventListener('submit', function(e){
+    e.preventDefault(); meld('');
+    var mail = $('pt-mail').value.trim(), ww = $('pt-ww').value;
+    if (!mail || !ww) return meld('Vul uw e-mailadres en uw wachtwoord in.');
+    $('pt-in').disabled = true;
+    vraag('/api/portaal/in', 'POST', {mail: mail, ww: ww}).then(function(r){ $('pt-ww').value = ''; if (r.code === 200) return laad(); meld(r.j.fout || 'Aanmelden is niet gelukt. Probeer het later opnieuw.'); })
+      .catch(function(){ meld('Het portaal is even niet bereikbaar. Probeer het later opnieuw.'); })
+      .then(function(){ $('pt-in').disabled = false; });
+  });
+  if (location.hash) history.replaceState(null, '', location.pathname);      // een oude persoonlijke link (voor 4.40) werkt niet meer
+  laad();
 })();
 </script>
 
