@@ -125,6 +125,10 @@ function schoonZaaglijst(b, prijs) {
     const gekozen = r.mat ? ((prijs && prijs.materialen) || []).find(x => x.id === String(r.mat)) : null;
     if (r.mat && !gekozen) return { fout: n + 'dit materiaal staat niet meer in de lijst. Kies het opnieuw.' };
     const o = { mat: gekozen ? gekozen.id : '', materiaal: gekozen ? gekozen.naam : tekst(r.materiaal, 80), dikte: gekozen ? gekozen.dikte : r.dikte === '' || r.dikte == null ? null : getal(r.dikte), l: getal(r.l), b: getal(r.b), aantal: Math.round(getal(r.aantal)), nerf: r.nerf === true, kanten: { l1: k.l1 === true, l2: k.l2 === true, b1: k.b1 === true, b2: k.b2 === true }, ref: tekst(r.ref, 60) };
+    // de kant: wat de klant koos, anders de standaardkant van de plaat. Alleen als er een zijde aangevinkt is.
+    const metKant = o.kanten.l1 || o.kanten.l2 || o.kanten.b1 || o.kanten.b2, gevraagd = tekst(r.kant, 80);
+    if (gevraagd && !((prijs && prijs.kanten) || []).includes(gevraagd)) return { fout: n + 'deze kant staat niet meer in de lijst. Kies ze opnieuw.' };
+    o.kant = metKant ? (gevraagd || (gekozen ? gekozen.kant : '')) : '';
     if (!o.materiaal) return { fout: n + 'vul het materiaal in.' };
     if (o.dikte !== null && !(o.dikte > 0 && o.dikte <= 120)) return { fout: n + 'de dikte moet tussen 0 en 120 mm liggen.' };
     if (!(o.l >= 10 && o.l <= 6000) || !(o.b >= 10 && o.b <= 6000)) return { fout: n + 'lengte en breedte moeten tussen 10 en 6000 mm liggen.' };
@@ -224,7 +228,7 @@ async function behandel(req, res, pad) {
       const kent = s.aanvragen || {}, drie = Date.now() - 92 * 86400000;
       const aanvragen = (await lees('aanvragen', [])).filter(x => x.klantAfk === a.klantAfk).map(x => { const k = kent[x.id]; return { id: x.id, soort: x.soort, tijd: x.tijd, titel: titelVan(x), urgentie: x.urgentie || '', status: k ? k.status : x.opgehaald ? 'nieuw' : 'verstuurd', antwoord: k ? k.antwoord : '' }; })
         .filter(x => x.status !== 'klaar' || new Date(x.tijd) > drie).sort((x, y) => String(y.tijd).localeCompare(String(x.tijd))).slice(0, 60);
-      return stuur(res, 200, { klant: s.klanten[a.klantAfk] || a.klantAfk, naam: a.naam, mail: a.mail, alsBureau: !!w.alsBureau, bijgewerkt: s.ontvangen, oud: !s.ontvangen || Date.now() - new Date(s.ontvangen) > OUD_MS, projecten, aanvragen, redenen: REDENEN, urgenties: URGENTIES, materialen: s.prijs ? s.prijs.materialen.map(m => ({ id: m.id, naam: m.naam, dikte: m.dikte })) : [] }), true;
+      return stuur(res, 200, { klant: s.klanten[a.klantAfk] || a.klantAfk, naam: a.naam, mail: a.mail, alsBureau: !!w.alsBureau, bijgewerkt: s.ontvangen, oud: !s.ontvangen || Date.now() - new Date(s.ontvangen) > OUD_MS, projecten, aanvragen, redenen: REDENEN, urgenties: URGENTIES, materialen: s.prijs ? s.prijs.materialen.map(m => ({ id: m.id, naam: m.naam, dikte: m.dikte, kant: m.kant })) : [], kanten: s.prijs ? s.prijs.kanten : [] }), true;
     }
     // de richtprijs terwijl de klant typt: alleen het totaal en per regel of het uit stock kan. Onvolledige regels tellen niet mee.
     if (pad === '/api/portaal/prijs' && req.method === 'POST') {
@@ -233,7 +237,7 @@ async function behandel(req, res, pad) {
       let b; try { b = JSON.parse(await leesBody(req, 200000)); } catch (e) { b = null; }
       if (!b || !Array.isArray(b.regels) || b.regels.length > 200) return stuur(res, 400, { fout: 'De lijst kon niet gelezen worden.' }), true;
       const vol = [], plaats = [];
-      b.regels.forEach((r, i) => { r = r || {}; const o = { mat: String(r.mat || ''), l: getal(r.l), b: getal(r.b), aantal: Math.round(getal(r.aantal)), nerf: r.nerf === true, kanten: r.kanten && typeof r.kanten === 'object' ? r.kanten : {} }; if (o.l >= 10 && o.l <= 6000 && o.b >= 10 && o.b <= 6000 && o.aantal >= 1 && o.aantal <= 999) { vol.push(o); plaats.push(i); } });
+      b.regels.forEach((r, i) => { r = r || {}; const o = { mat: String(r.mat || ''), kant: tekst(r.kant, 80), l: getal(r.l), b: getal(r.b), aantal: Math.round(getal(r.aantal)), nerf: r.nerf === true, kanten: r.kanten && typeof r.kanten === 'object' ? r.kanten : {} }; if (o.l >= 10 && o.l <= 6000 && o.b >= 10 && o.b <= 6000 && o.aantal >= 1 && o.aantal <= 999) { vol.push(o); plaats.push(i); } });
       const rp = PRIJS.richtprijs(w.stand.prijs, w.account.klantAfk, vol), regels = b.regels.map(() => ({ stock: '' }));
       plaats.forEach((i, n) => { regels[i] = rp.regels[n]; });
       const her = t => t.replace(/^Regel (\d+)/, (m, nr) => 'Regel ' + (plaats[parseInt(nr, 10) - 1] + 1));

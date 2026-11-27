@@ -72,7 +72,7 @@ P['index.html'] = ['Maatwerk in hout en plaat voor professionals', 'ASB De Backe
 <section class="held"><div class="binnen">
   <div>
     <p class="boventitel">Schrijnwerkerij in Herenthout · al 30 jaar</p>
-    <h1>Maatwerk dat klopt tot op de millimeter</h1>
+    <h1>Maatwerk tot op de millimeter</h1>
     <p class="intro">Wij maken onderdelen en afgewerkte meubels op maat, in massief hout en plaatmateriaal. Voor interieurbouwers, architecten en collega-schrijnwerkers die een betrouwbaar atelier zoeken voor wat ze zelf niet kunnen of willen maken.</p>
     <div class="knoppen">${knop('professionals.html', 'Voor professionals', 'hoofd')}${knop('realisaties.html', 'Bekijk realisaties')}</div>
   </div>
@@ -86,7 +86,7 @@ ${sectie('Wat wij voor u doen', kaarten([
 ${sectie('Waarom ASB De Backer', `<div class="punten">
   <div><b>Alles op maat, tot op de millimeter</b><p>Geen standaardmaten. Elk stuk wordt gemaakt volgens uw tekening.</p></div>
   <div><b>Eigen atelier</b><p>Zagen, frezen en afwerken gebeuren bij ons. Zo houden wij kwaliteit en termijn zelf in de hand.</p></div>
-  <div><b>30 jaar vakkennis</b><p>Massief hout, fineer, melamine en laminaat: wij kennen het materiaal en zeggen het als iets beter anders kan.</p></div>
+  <div><b>30 jaar vakkennis</b><p>Massief hout, fineer, melamine en laminaat: wij kennen het materiaal en geven advies.</p></div>
 </div>`, 'licht')}
 ${sectie('', particulier())}
 ${afsluiter('Een project of een lijst met onderdelen?', 'Stuur ons uw tekening, schets of stuklijst. U krijgt een offerte op maat.')}
@@ -218,10 +218,10 @@ P['portaal.html'] = ['Klantenportaal', 'Het klantenportaal van ASB De Backer: va
 
 <form class="formulier ptvak" id="pt-zaag" hidden novalidate>
 <h3>Zaaglijst bestellen</h3>
-<p class="klein">Alle maten in millimeter, afgewerkte maat. Kanten: L1 en L2 zijn de lange zijden, B1 en B2 de korte zijden; vink aan waar kantenband moet komen. Dit is een aanvraag: wij bevestigen prijs en termijn voor wij beginnen te zagen.</p>
+<p class="klein">Alle maten in millimeter, afgewerkte maat. L1 en L2 zijn de lange zijden, B1 en B2 de korte: vink aan waar een kant moet komen. Bij “Kant” staat de kant die standaard bij de plaat hoort; u kunt er een andere kiezen. Dit is een aanvraag: wij bevestigen prijs en termijn voor wij beginnen te zagen.</p>
 <div class="pttwee"><label>Uw referentie<input type="text" id="z-ref" maxlength="80"></label><label>Gewenst tegen <span class="klein">(niet verplicht)</span><input type="date" id="z-gewenst"></label></div>
-<div id="z-regels"></div>
-<div class="knoppen" style="margin:6px 0 18px"><button type="button" class="knop" id="z-bij">Regel toevoegen</button><button type="button" class="knop" id="z-kopie">Laatste regel kopiëren</button></div>
+<div class="ptbladwrap"><table class="ptblad"><thead><tr><th></th><th>Materiaal</th><th>Lengte</th><th>Breedte</th><th>Aantal</th><th title="Kant op de eerste lange zijde">L1</th><th title="Kant op de tweede lange zijde">L2</th><th title="Kant op de eerste korte zijde">B1</th><th title="Kant op de tweede korte zijde">B2</th><th>Kant</th><th title="Nerf in de lengte van het stuk">Nerf</th><th>Referentie</th><th></th><th></th></tr></thead><tbody id="z-regels"></tbody></table></div>
+<div class="knoppen" style="margin:10px 0 18px"><button type="button" class="knop" id="z-bij">Regel toevoegen</button><span class="klein ptuitleg">&#x29C9; kopieert een regel naar onder · Enter gaat een regel lager</span></div>
 <label>Opmerking <span class="klein">(niet verplicht)</span><textarea id="z-opm" rows="3" maxlength="1000"></textarea></label>
 <p id="z-som" class="klein"></p>
 <p id="z-prijs" class="ptprijs" role="status" hidden></p>
@@ -295,31 +295,48 @@ P['portaal.html'] = ['Klantenportaal', 'Het klantenportaal van ASB De Backer: va
   $('pt-k-opn').addEventListener('click', function(){ open('opn'); });
   Array.prototype.forEach.call(document.querySelectorAll('[data-sluit]'), function(k){ k.addEventListener('click', function(){ open(''); }); });
 
-  // de regels van de zaaglijst
+  // de regels van de zaaglijst: een blad zoals in Excel, van links naar rechts, één regel per lijn
   // Materiaal: kiezen uit de lijst van ASB (dan kan er een richtprijs en een stockbolletje komen), of "ander materiaal" en zelf typen.
-  var VELDEN = [['materiaal', 'Welk materiaal?', 'text'], ['dikte', 'Dikte', 'dec'], ['l', 'Lengte', 'dec'], ['b', 'Breedte', 'dec'], ['aantal', 'Aantal', 'num'], ['ref', 'Referentie', 'text']];
+  // Kant: de standaardkant van de plaat, of een andere kant uit de lijst.
   function mats(){ return (laatste && laatste.materialen) || []; }
-  function anders(r){ var s = r.querySelector('[data-mat]'), zelf = !mats().length || s.value === '*'; r.querySelector('.v-materiaal').hidden = !zelf; r.querySelector('.v-dikte').hidden = !zelf; r.querySelector('.v-mat').hidden = !mats().length; r.className = 'ptregel' + (zelf ? ' zelf' : ''); }
-  function regel(van){
-    var r = document.createElement('div'); r.className = 'ptregel';
-    r.innerHTML = '<span class="ptnr"></span><span class="ptstock" hidden></span>'
-      + '<label class="v-mat">Materiaal<select data-mat><option value="">Kies het materiaal</option>' + mats().map(function(m){ return '<option value="' + esc(m.id) + '">' + esc(m.naam) + (new RegExp('(^|\\\\D)' + String(m.dikte).replace('.', '[.,]') + ' ?mm', 'i').test(m.naam) ? '' : ' · ' + String(m.dikte).replace('.', ',') + ' mm') + '</option>'; }).join('') + '<option value="*">Ander materiaal (prijs op aanvraag)</option></select></label>'
-      + VELDEN.map(function(v){ return '<label class="v-' + v[0] + '">' + v[1] + '<input data-v="' + v[0] + '" type="text"' + (v[2] === 'text' ? ' maxlength="' + (v[0] === 'ref' ? 60 : 80) + '"' : ' inputmode="' + (v[2] === 'num' ? 'numeric' : 'decimal') + '"') + '></label>'; }).join('')
-      + '<div class="ptkanten"><span>Kanten</span>' + ['l1', 'l2', 'b1', 'b2'].map(function(k){ return '<label><input type="checkbox" data-k="' + k + '">' + k.toUpperCase() + '</label>'; }).join('') + '<label class="ptnerf"><input type="checkbox" data-nerf>Nerf in de lengte</label></div>'
-      + '<button type="button" class="ptweg" aria-label="Regel verwijderen">×</button>';
+  function kantLijst(){ return (laatste && laatste.kanten) || []; }
+  function matVan(r){ var s = r.querySelector('[data-mat]').value; return mats().filter(function(m){ return m.id === s; })[0] || null; }
+  function anders(r){
+    var s = r.querySelector('[data-mat]'), zelf = !mats().length || s.value === '*';
+    r.querySelector('.ptzelf').hidden = !zelf; s.hidden = !mats().length;
+    // de eerste keuze bij Kant is de standaardkant van de gekozen plaat
+    var k = r.querySelector('[data-kant]'), m = matVan(r), was = k.value;
+    k.innerHTML = '<option value="">' + (m && m.kant ? 'Standaard: ' + esc(m.kant) : kantLijst().length ? 'Kies een kant' : 'Geen keuze') + '</option>' + kantLijst().filter(function(n){ return !(m && m.kant === n); }).map(function(n){ return '<option value="' + esc(n) + '">' + esc(n) + '</option>'; }).join('');
+    k.value = was; if (k.value !== was) k.value = '';
+  }
+  function regel(van, na){
+    var r = document.createElement('tr'); r.className = 'ptregel';
+    var tekstvak = function(v, soort, max, tip){ return '<input data-v="' + v + '" type="text" aria-label="' + tip + '"' + (soort === 'text' ? ' maxlength="' + max + '"' : ' inputmode="' + (soort === 'num' ? 'numeric' : 'decimal') + '"') + '>'; };
+    r.innerHTML = '<td class="ptnr"></td>'
+      + '<td class="c-mat"><select data-mat aria-label="Materiaal"><option value="">Kies het materiaal</option>' + mats().map(function(m){ return '<option value="' + esc(m.id) + '">' + esc(m.naam) + (new RegExp('(^|\\\\D)' + String(m.dikte).replace('.', '[.,]') + ' ?mm', 'i').test(m.naam) ? '' : ' · ' + String(m.dikte).replace('.', ',') + ' mm') + '</option>'; }).join('') + '<option value="*">Ander materiaal (prijs op aanvraag)</option></select>'
+      + '<div class="ptzelf" hidden><input data-v="materiaal" type="text" maxlength="80" placeholder="Welk materiaal?" aria-label="Welk materiaal?"><input data-v="dikte" type="text" inputmode="decimal" placeholder="Dikte" aria-label="Dikte in mm"></div></td>'
+      + '<td class="c-getal">' + tekstvak('l', 'dec', 0, 'Lengte in mm') + '</td><td class="c-getal">' + tekstvak('b', 'dec', 0, 'Breedte in mm') + '</td><td class="c-klein">' + tekstvak('aantal', 'num', 0, 'Aantal') + '</td>'
+      + ['l1', 'l2', 'b1', 'b2'].map(function(k){ return '<td class="c-vink"><input type="checkbox" data-k="' + k + '" aria-label="Kant op ' + k.toUpperCase() + '"></td>'; }).join('')
+      + '<td class="c-kant"><select data-kant aria-label="Kant"></select></td>'
+      + '<td class="c-vink"><input type="checkbox" data-nerf aria-label="Nerf in de lengte"></td>'
+      + '<td class="c-ref">' + tekstvak('ref', 'text', 60, 'Referentie') + '</td>'
+      + '<td class="c-stock"><span class="ptstock" hidden></span></td>'
+      + '<td class="c-knop"><button type="button" class="ptkop" title="Kopieer deze regel naar onder" aria-label="Kopieer deze regel naar onder">&#x29C9;</button><button type="button" class="ptweg" title="Regel verwijderen" aria-label="Regel verwijderen">×</button></td>';
     if (van) {
       r.querySelector('[data-mat]').value = van.querySelector('[data-mat]').value;
-      Array.prototype.forEach.call(van.querySelectorAll('input'), function(i, n){ var j = r.querySelectorAll('input')[n]; if (i.type === 'checkbox') j.checked = i.checked; else if (i.dataset.v !== 'ref') j.value = i.value; });
+      Array.prototype.forEach.call(van.querySelectorAll('input'), function(i, n){ var j = r.querySelectorAll('input')[n]; if (i.type === 'checkbox') j.checked = i.checked; else j.value = i.value; });
     }
-    $('z-regels').className = mats().length ? '' : 'geenlijst';
-    anders(r); $('z-regels').appendChild(r); nummer(); return r;
+    anders(r);
+    if (van) r.querySelector('[data-kant]').value = van.querySelector('[data-kant]').value;
+    if (na && na.nextSibling) $('z-regels').insertBefore(r, na.nextSibling); else $('z-regels').appendChild(r);
+    nummer(); return r;
   }
   function nummer(){ Array.prototype.forEach.call($('z-regels').children, function(r, i){ r.querySelector('.ptnr').textContent = i + 1; }); som(); }
   // alle regels in de volgorde van het scherm, ook de lege (leeg: true), zodat het antwoord van de prijs bij de juiste regel komt
   function alleRegels(){
     return Array.prototype.map.call($('z-regels').children, function(r, i){
       var o = {nr: i + 1, kanten: {}}, s = r.querySelector('[data-mat]').value; Array.prototype.forEach.call(r.querySelectorAll('[data-v]'), function(x){ o[x.dataset.v] = x.value.trim(); });
-      Array.prototype.forEach.call(r.querySelectorAll('[data-k]'), function(x){ o.kanten[x.dataset.k] = x.checked; }); o.nerf = r.querySelector('[data-nerf]').checked;
+      Array.prototype.forEach.call(r.querySelectorAll('[data-k]'), function(x){ o.kanten[x.dataset.k] = x.checked; }); o.nerf = r.querySelector('[data-nerf]').checked; o.kant = r.querySelector('[data-kant]').value;
       var zelf = !mats().length || s === '*'; o.mat = zelf ? '' : s; if (!zelf) { o.materiaal = ''; o.dikte = ''; }
       o.leeg = !(o.mat || o.materiaal || o.l || o.b || o.aantal || o.dikte);                  // een volledig lege regel telt niet mee
       return o;
@@ -333,22 +350,30 @@ P['portaal.html'] = ['Klantenportaal', 'Het klantenportaal van ASB De Backer: va
     if (!mats().length) { $('z-prijs').hidden = true; return; }
     prijsKlok = setTimeout(function(){
       var mijn = ++prijsNr, rs = alleRegels();
-      vraag('/api/portaal/prijs', 'POST', {regels: rs.map(function(r){ return {mat: r.mat, l: r.l, b: r.b, aantal: r.aantal, nerf: r.nerf, kanten: r.kanten}; })}).then(function(a){
+      vraag('/api/portaal/prijs', 'POST', {regels: rs.map(function(r){ return {mat: r.mat, kant: r.kant, l: r.l, b: r.b, aantal: r.aantal, nerf: r.nerf, kanten: r.kanten}; })}).then(function(a){
         if (mijn !== prijsNr || a.code !== 200) return;                                    // intussen is er verder getypt
         Array.prototype.forEach.call($('z-regels').children, function(r, i){ var b = r.querySelector('.ptstock'), s = (a.j.regels[i] || {}).stock; b.hidden = !s; b.className = 'ptstock ' + (s === 'ja' ? 'ja' : 'nee'); b.textContent = s === 'ja' ? 'Uit stock' : 'Langere levertijd'; b.title = s === 'ja' ? 'De platen voor deze regel liggen in onze stock.' : 'Voor deze regel moeten wij platen bestellen: reken op een langere levertijd.'; });
         var p = $('z-prijs'); p.hidden = !a.j.geteld;
-        if (a.j.totaal != null) p.innerHTML = '<b>Richtprijs: ' + a.j.totaal.toLocaleString('nl-BE', {style: 'currency', currency: 'EUR'}) + '</b> excl. btw, onder voorbehoud van onze bevestiging. Berekend met volledige platen.';
+        if (a.j.totaal != null) p.innerHTML = '<b>Richtprijs: ' + a.j.totaal.toLocaleString('nl-BE', {style: 'currency', currency: 'EUR'}) + '</b> excl. btw, onder voorbehoud van onze bevestiging. Platen, zagen en kanten inbegrepen.';
         else p.innerHTML = '<b>Prijs op aanvraag.</b> ' + a.j.waarom.map(esc).join(' ');
       }).catch(function(){});
     }, 500);
   }
   function som(){ var rs = leesRegels(), st = rs.reduce(function(t, r){ return t + (parseInt(r.aantal, 10) || 0); }, 0); $('z-som').textContent = rs.length ? rs.length + (rs.length === 1 ? ' regel, ' : ' regels, ') + st + (st === 1 ? ' stuk.' : ' stukken.') : ''; }
-  $('z-bij').addEventListener('click', function(){ regel().querySelector('input').focus(); });
-  $('z-kopie').addEventListener('click', function(){ var k = $('z-regels').children; regel(k.length ? k[k.length - 1] : null).querySelector('[data-v=l]').focus(); vraagPrijs(); });
-  $('z-regels').addEventListener('click', function(e){ if (e.target.className === 'ptweg') { e.target.parentNode.remove(); nummer(); } });
+  $('z-bij').addEventListener('click', function(){ var r = regel(); (mats().length ? r.querySelector('[data-mat]') : r.querySelector('[data-v=materiaal]')).focus(); });
+  $('z-regels').addEventListener('click', function(e){
+    var r = e.target.closest ? e.target.closest('tr') : null; if (!r) return;
+    if (e.target.className === 'ptweg') { r.remove(); nummer(); vraagPrijs(); }
+    if (e.target.className === 'ptkop') { regel(r, r).querySelector('[data-v=l]').select(); vraagPrijs(); }      // kopie vlak eronder: alleen wat anders is, moet nog overschreven worden
+  });
   $('z-regels').addEventListener('input', function(){ som(); vraagPrijs(); });
-  $('z-regels').addEventListener('change', function(e){ if (e.target.hasAttribute('data-mat')) anders(e.target.parentNode.parentNode); som(); vraagPrijs(); });
-  $('z-regels').addEventListener('click', function(e){ if (e.target.className === 'ptweg') vraagPrijs(); });
+  $('z-regels').addEventListener('change', function(e){ if (e.target.hasAttribute('data-mat')) anders(e.target.closest('tr')); som(); vraagPrijs(); });
+  // Enter in een vak gaat naar hetzelfde vak een regel lager, zoals in een rekenblad; onderaan komt er een regel bij
+  $('z-regels').addEventListener('keydown', function(e){
+    if (e.key !== 'Enter' || !e.target.dataset || !e.target.dataset.v) return; e.preventDefault();
+    var r = e.target.closest('tr'), v = r.nextElementSibling || regel(), doel = v.querySelector('[data-v="' + e.target.dataset.v + '"]');
+    if (doel && doel.offsetParent !== null) doel.select(); else v.querySelector('[data-v=l]').select();
+  });
   $('pt-zaag').addEventListener('submit', function(e){
     e.preventDefault(); foutIn('z-fout', '');
     var rs = leesRegels(), g = function(v){ return parseFloat(String(v).replace(',', '.')); };
@@ -359,7 +384,7 @@ P['portaal.html'] = ['Klantenportaal', 'Het klantenportaal van ASB De Backer: va
       if (!(g(r.l) > 0) || !(g(r.b) > 0)) return foutIn('z-fout', 'Regel ' + r.nr + ': vul de lengte en de breedte in.');
       if (!(parseInt(r.aantal, 10) > 0)) return foutIn('z-fout', 'Regel ' + r.nr + ': vul het aantal in.'); }
     $('z-ok').disabled = true;
-    vraag('/api/portaal/zaaglijst', 'POST', {ref: $('z-ref').value, gewenst: $('z-gewenst').value, opmerking: $('z-opm').value, regels: rs.map(function(r){ return {mat: r.mat, materiaal: r.materiaal, dikte: r.dikte, l: r.l, b: r.b, aantal: r.aantal, nerf: r.nerf, kanten: r.kanten, ref: r.ref}; })})
+    vraag('/api/portaal/zaaglijst', 'POST', {ref: $('z-ref').value, gewenst: $('z-gewenst').value, opmerking: $('z-opm').value, regels: rs.map(function(r){ return {mat: r.mat, kant: r.kant, materiaal: r.materiaal, dikte: r.dikte, l: r.l, b: r.b, aantal: r.aantal, nerf: r.nerf, kanten: r.kanten, ref: r.ref}; })})
       .then(function(r){ if (r.code !== 200) return foutIn('z-fout', r.code === 401 ? 'U bent niet meer aangemeld. Uw lijst staat nog op deze pagina: meld u aan in een ander tabblad en verstuur opnieuw.' : (r.j.fout || 'Versturen is niet gelukt. Probeer het opnieuw.'));
         $('z-regels').innerHTML = ''; $('z-ref').value = ''; $('z-gewenst').value = ''; $('z-opm').value = ''; $('z-prijs').hidden = true; som();
         gelukt('Uw zaaglijst is verstuurd. U ziet ze hieronder bij “Uw aanvragen”. Wij bevestigen prijs en termijn voor wij beginnen.'); })
